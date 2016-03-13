@@ -35,6 +35,7 @@ public class MainMenuScreen extends Screen {
         g.drawPixmap(Assets.background, 0, 0);
         g.drawPixmap(Assets.redPiece, 0,0);
         g.drawText("FUNCIONA", 100, 100);
+
     }
 
     @Override
