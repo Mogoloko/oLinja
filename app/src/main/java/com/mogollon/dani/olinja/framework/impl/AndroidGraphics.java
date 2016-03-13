@@ -24,14 +24,18 @@ public class AndroidGraphics implements Graphics {
     Paint paint;
     Rect srcRect = new Rect();
     Rect dstRect = new Rect();
+    int screenOffsetX;
+    int screenOffsetY;
     double scaleRatio;
 
-    public AndroidGraphics(AssetManager assets, Bitmap frameBuffer, double scaleRatio) {
+    public AndroidGraphics(AssetManager assets, Bitmap frameBuffer, double scaleRatio, int screenOffsetXP, int screenOffsetYP) {
         this.assets = assets;
         this.frameBuffer = frameBuffer;
         this.canvas = new Canvas(frameBuffer);
         this.paint = new Paint();
         this.scaleRatio = scaleRatio;
+        this.screenOffsetX = screenOffsetXP;
+        this.screenOffsetY = screenOffsetYP;
     }
 
     public Pixmap newPixmap(String fileName, PixmapFormat format) {
@@ -104,10 +108,10 @@ public class AndroidGraphics implements Graphics {
         srcRect.right = srcX + srcWidth - 1;
         srcRect.bottom = srcY + srcHeight - 1;
 
-        dstRect.left = (int) scaleRatio * x;
-        dstRect.top = (int) scaleRatio * y;
-        dstRect.right = (int) scaleRatio * (x + srcWidth - 1);
-        dstRect.bottom = (int) scaleRatio * (y + srcHeight - 1);
+        dstRect.left = (int) (scaleRatio * x) + screenOffsetX;
+        dstRect.top = (int) (scaleRatio * y)  + screenOffsetY;
+        dstRect.right = (int) (scaleRatio * (x + srcWidth - 1))+ screenOffsetX;
+        dstRect.bottom = (int) (scaleRatio * (y + srcHeight - 1)) + screenOffsetY;
 
         canvas.drawBitmap(((AndroidPixmap) pixmap).bitmap, srcRect, dstRect, null);
     }
@@ -121,10 +125,10 @@ public class AndroidGraphics implements Graphics {
         srcRect.right = srcX + srcWidth - 1;
         srcRect.bottom = srcY + srcHeight - 1;
 
-        dstRect.left = (int) scaleRatio * srcRect.left;
-        dstRect.top = (int) scaleRatio * srcRect.top;
-        dstRect.right = (int) scaleRatio * srcRect.right;
-        dstRect.bottom = (int) scaleRatio * srcRect.bottom;
+        dstRect.left = (int) (scaleRatio * srcRect.left) + screenOffsetX;
+        dstRect.top = (int) (scaleRatio * srcRect.top) + screenOffsetY;
+        dstRect.right = (int) (scaleRatio * srcRect.right)+ screenOffsetX;
+        dstRect.bottom = (int) (scaleRatio * srcRect.bottom+ screenOffsetY);
 
         canvas.drawBitmap(((AndroidPixmap) pixmap).bitmap, srcRect, dstRect, null);
 
@@ -135,7 +139,7 @@ public class AndroidGraphics implements Graphics {
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
 
-        canvas.drawText(text, srcX, srcY, paint);
+        canvas.drawText(text, srcX + screenOffsetX, srcY + screenOffsetY, paint);
 
     }
 

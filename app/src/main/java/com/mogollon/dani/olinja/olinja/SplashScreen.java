@@ -30,8 +30,12 @@ public class SplashScreen extends Screen {
         Graphics g = game.getGraphics();
         Assets.background = g.newPixmap("background.png", PixmapFormat.RGB565);
         Assets.stick = g.newPixmap("palo.png", PixmapFormat.RGB565);
-        Assets.redPiece = g.newPixmap("rojo.png", PixmapFormat.ARGB8888);
+        Assets.redPiece = g.newPixmap("rojo.png", PixmapFormat.RGB565);
         Assets.blackPiece = g.newPixmap("negro.png", PixmapFormat.RGB565);
+        Assets.field = g.newPixmap("field.png", PixmapFormat.RGB565);
+        Assets.greyField = g.newPixmap("greyField.png", PixmapFormat.RGB565);
+        Assets.greyFieldMini = g.newPixmap("greyFieldMini.png", PixmapFormat.RGB565);
+
         Settings.load(game.getFileIO());
 
         if (!imagesLoaded) getLogin();

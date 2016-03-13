@@ -32,6 +32,8 @@ public abstract class AndroidGame extends Activity implements Game {
     WakeLock wakeLock;
     double screenRatio;
     double scaleRatio;
+    int screenOffsetX;
+    int screenOffsetY;
     int frameBufferWidth;
     int frameBufferHeight;
 
@@ -58,9 +60,9 @@ public abstract class AndroidGame extends Activity implements Game {
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
         boolean isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
-        frameBufferWidth = isLandscape ? displaymetrics.heightPixels : displaymetrics.widthPixels;
-        frameBufferHeight = isLandscape ? displaymetrics.widthPixels : displaymetrics.heightPixels;
-        screenRatio = frameBufferWidth / frameBufferHeight;
+        frameBufferHeight= isLandscape ? displaymetrics.heightPixels : displaymetrics.widthPixels;
+        frameBufferWidth = isLandscape ? displaymetrics.widthPixels : displaymetrics.heightPixels;
+        screenRatio = (double) frameBufferWidth / (double)frameBufferHeight;
 
         SharedPreferences settings = getSharedPreferences("oLinjaPrefs", 0);
         gameData = new GameData(settings);
@@ -69,8 +71,8 @@ public abstract class AndroidGame extends Activity implements Game {
         // Calculate scaleRatio
         calculateScaleRatio();
 
-        Bitmap frameBuffer = Bitmap.createBitmap((int) (frameBufferHeight),
-                (int) (frameBufferWidth), Config.RGB_565);
+        Bitmap frameBuffer = Bitmap.createBitmap((int) (frameBufferWidth),
+                (int) (frameBufferHeight), Config.RGB_565);
 
 
 
@@ -80,7 +82,7 @@ public abstract class AndroidGame extends Activity implements Game {
                 /// displaymetrics.heightPixels;
 
         renderView = new AndroidFastRenderView(this, frameBuffer);
-        graphics = new AndroidGraphics(getAssets(), frameBuffer, scaleRatio);
+        graphics = new AndroidGraphics(getAssets(), frameBuffer, scaleRatio, screenOffsetX, screenOffsetY);
         fileIO = new AndroidFileIO(this);
         audio = new AndroidAudio(this);
         input = new AndroidInput(this, renderView, scaleX, scaleY);
@@ -145,11 +147,15 @@ public abstract class AndroidGame extends Activity implements Game {
 
     private void calculateScaleRatio() {
 
-        if (Double.compare(screenRatio,gameData.getGameScreenRatio()) > 0) {
+        if (Double.compare(screenRatio,gameData.getGameScreenRatio()) < 0) {
             scaleRatio = (double) frameBufferWidth / gameData.getGameScreenWidth() ;
         } else {
             scaleRatio = (double) frameBufferHeight / gameData.getGameScreenHeight() ;
         }
 
+        screenOffsetX = (int) (frameBufferWidth - (gameData.getGameScreenWidth() * scaleRatio)) / 2;
+        screenOffsetY = (int) (frameBufferHeight - (gameData.getGameScreenHeight() * scaleRatio)) / 2;
+
     }
+
 }

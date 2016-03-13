@@ -9,4 +9,7 @@ public class Assets {
     public static Pixmap stick;
     public static Pixmap redPiece;
     public static Pixmap blackPiece;
+    public static Pixmap field;
+    public static Pixmap greyField;
+    public static Pixmap greyFieldMini;
 }
