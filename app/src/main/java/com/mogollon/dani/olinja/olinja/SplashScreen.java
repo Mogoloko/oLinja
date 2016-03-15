@@ -60,11 +60,12 @@ public class SplashScreen extends Screen {
                     Boolean logged = Boolean.parseBoolean(data.getString("logged")) || false;
 
                     if (logged) {
-                        game.setScreen(new MainMenuScreen(game));
+                        //game.setScreen(new MainMenuScreen(game));
+                        game.setScreen(new LoginScreen(game));
                     } else {
                         Log.v("oLINJALOG", "No logueado");
-                        //game.setScreen(new LoginScreen(game));
-                        game.setScreen(new MainMenuScreen(game));
+                        game.setScreen(new LoginScreen(game));
+
                     }
 
                 } catch (JSONException e) {

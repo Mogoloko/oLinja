@@ -120,15 +120,15 @@ public class AndroidGraphics implements Graphics {
         int srcWidth = (int) (pixmap.getWidth());
         int srcHeight = (int) (pixmap.getHeight());
 
-        srcRect.left = srcX;
-        srcRect.top = srcY;
-        srcRect.right = srcX + srcWidth - 1;
-        srcRect.bottom = srcY + srcHeight - 1;
+        srcRect.left = 0;
+        srcRect.top = 0;
+        srcRect.right = srcWidth - 1;
+        srcRect.bottom = srcHeight - 1;
 
-        dstRect.left = (int) (scaleRatio * srcRect.left) + screenOffsetX;
-        dstRect.top = (int) (scaleRatio * srcRect.top) + screenOffsetY;
-        dstRect.right = (int) (scaleRatio * srcRect.right)+ screenOffsetX;
-        dstRect.bottom = (int) (scaleRatio * srcRect.bottom+ screenOffsetY);
+        dstRect.left = (int) (scaleRatio * srcX) + screenOffsetX;
+        dstRect.top = (int) (scaleRatio * srcY) + screenOffsetY;
+        dstRect.right = (int) (scaleRatio * (srcRect.right +srcX))+ screenOffsetX;
+        dstRect.bottom = (int) (scaleRatio * (srcRect.bottom + srcY)) + screenOffsetY;
 
         canvas.drawBitmap(((AndroidPixmap) pixmap).bitmap, srcRect, dstRect, null);
 
@@ -139,7 +139,7 @@ public class AndroidGraphics implements Graphics {
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
 
-        canvas.drawText(text, srcX + screenOffsetX, srcY + screenOffsetY, paint);
+        canvas.drawText(text, (int)(scaleRatio * srcX) + screenOffsetX, (int) (scaleRatio * srcY) + screenOffsetY, paint);
 
     }
 
